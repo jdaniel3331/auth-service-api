@@ -3,7 +3,7 @@ CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 CREATE SCHEMA auth;
 
 CREATE TABLE auth.user_accounts (
-    user_account_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_account_id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
 	username VARCHAR(32) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
