@@ -1,0 +1,13 @@
+services:
+  db:
+    image: postgres:17.9
+    container_name: auth-service-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "${BD_PORT}:5432"
+    volumes:
+      - ./scripts/db_script.sql:/docker-entrypoint-initdb.d/script.sql:ro
