@@ -1,13 +1,22 @@
 package com.jdaniel3331.authserviceapi.controllers;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.jdaniel3331.authserviceapi.dtos.ApiResponse;
+import com.jdaniel3331.authserviceapi.dtos.LoginRequest;
+import com.jdaniel3331.authserviceapi.dtos.LoginResponse;
+import com.jdaniel3331.authserviceapi.services.AuthService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
+
+    private final AuthService authService;
+
+    public AuthController(AuthService authService) {
+        this.authService = authService;
+    }
 
     @GetMapping
     public String hola(){
@@ -20,8 +29,10 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public void login() {
-
+    public ResponseEntity<ApiResponse<LoginResponse>> login(@RequestBody LoginRequest  loginRequest) {
+        LoginResponse r = authService.login(loginRequest);
+        ApiResponse<LoginResponse> response = new ApiResponse<>(HttpStatus.OK.name(),"Login exitoso", HttpStatus.OK.value(),r);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/refresh")
