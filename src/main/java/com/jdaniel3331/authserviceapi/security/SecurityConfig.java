@@ -4,8 +4,10 @@ import com.jdaniel3331.authserviceapi.services.impl.EncryptionServiceImpl;
 import com.jdaniel3331.authserviceapi.services.impl.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -55,5 +57,14 @@ public class SecurityConfig {
         );
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         return authenticationProvider;
+    }
+
+    /*
+    *   Se expone el AuthenticationManager para que pueda ser inyectado en otros componentes.
+    *   AuthenticationConfiguration recolectar todos los componentes de seguridad (UserDetailsService, PasswordEncoder, etc.)
+    * */
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager(); // Retorna la instancia global del AuthenticationManager
     }
 }
